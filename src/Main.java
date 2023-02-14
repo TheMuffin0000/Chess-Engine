@@ -82,14 +82,4 @@ public class Main extends Application {
             }
         }
     }
-    private void drawMoves(List<int[]> moves){
-        for (int i = 0; i < moves.size(); i++) {
-            Image image = new Image("Images/" + "R" + "_" + grid[moves.get(i)[0]][moves.get(i)[1]].coulor + "_" + grid[moves.get(i)[0]][moves.get(i)[1]].image + ".png");
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(TILE_SIZE);
-            imageView.setFitHeight(TILE_SIZE);
-            System.out.println(moves.get(i)[0] + ", " + moves.get(i)[1]);
-            gridPain.add(imageView, moves.get(i)[0], moves.get(i)[1]);
-        }
-    }
 }
