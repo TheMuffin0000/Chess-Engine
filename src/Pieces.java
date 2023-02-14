@@ -4,5 +4,5 @@ abstract class Pieces {
     public String coulor;
     protected int value;
 
-    abstract public List<int[]> movement( int x, int y, Pieces[][] grid);
+    abstract public List<int[]> movement( int x, int y);
 }

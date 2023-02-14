@@ -7,7 +7,7 @@ public class King extends Pieces{
         super.image = "K";
         super.value = 100;
     }
-    public List<int[]> movement(int x, int y, Pieces[][] grid) {//todo
+    public List<int[]> movement(int x, int y) {
         List<int[]> validMoves = new ArrayList<>();
         int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] dy = {-1, 0, 1, -1, 1, -1, 0, 1};
