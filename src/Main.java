@@ -45,8 +45,7 @@ public class Main extends Application {
             Pieces piece = grid[selectedRow][selectedCol];
             moves = piece.movement(selectedCol,selectedRow);
             drawBourd();
-        } else {
-            moves = null;
+        } else {//todo only allow moves to be made if they are in the list moves
             Pieces piece = grid[selectedRow][selectedCol];
             grid[selectedRow][selectedCol] = new Empty("E");
             grid[row][col] = piece;
@@ -54,6 +53,7 @@ public class Main extends Application {
             bourd.PrintBourd();
 
             gridPain.getChildren().clear();
+            moves = null;
             drawBourd();
             selectedRow = -1;
             selectedCol = -1;
