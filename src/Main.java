@@ -37,17 +37,22 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    private void handleMouseClick(int row, int col, GridPane gridPain) {
-        if (selectedRow == -1 && grid[row][col].coulor != "E") {
+    private void handleMouseClick(int row, int col) {
+        if (moves == null && grid[row][col].coulor != "E") {
             selectedRow = row;
             selectedCol = col;
 
             Pieces piece = grid[selectedRow][selectedCol];
-            moves = piece.movement(selectedCol,selectedRow);
+            moves = piece.movement(selectedCol,selectedRow, grid);
+            if(moves.size() < 1) {
+                moves = null;
+                selectedRow = -1;
+                selectedCol = -1;
+            }
             drawBourd();
         } else {
             for(int i = 0; i < moves.size(); i++) {
-                if(col ==  moves.get(i)[0] && row ==  moves.get(i)[1]) {
+                if(col == moves.get(i)[0] && row ==  moves.get(i)[1]) {
                     Pieces piece = grid[selectedRow][selectedCol];
                     grid[selectedRow][selectedCol] = new Empty("E");
                     grid[row][col] = piece;
@@ -80,7 +85,7 @@ public class Main extends Application {
                 gridPain.add(imageView, col, row);
                 final int row2 = row;
                 final int col2 = col;
-                imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2, gridPain));
+                imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
 
             }
         }

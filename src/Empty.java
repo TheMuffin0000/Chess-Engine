@@ -7,7 +7,7 @@ public class Empty extends Pieces{
         super.image = "-";
         super.value = 0;
     }
-    public List<int[]> movement(int x, int y) {
+    public List<int[]> movement(int x, int y, Pieces[][] grid) {
         List<int[]> validMoves = new ArrayList<>();
         return validMoves;
     }
