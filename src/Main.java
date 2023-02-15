@@ -45,18 +45,21 @@ public class Main extends Application {
             Pieces piece = grid[selectedRow][selectedCol];
             moves = piece.movement(selectedCol,selectedRow);
             drawBourd();
-        } else {//todo only allow moves to be made if they are in the list moves
-            Pieces piece = grid[selectedRow][selectedCol];
-            grid[selectedRow][selectedCol] = new Empty("E");
-            grid[row][col] = piece;
-            bourd.setBourd(grid);
-            bourd.PrintBourd();
-
-            gridPain.getChildren().clear();
-            moves = null;
-            drawBourd();
-            selectedRow = -1;
-            selectedCol = -1;
+        } else {
+            for(int i = 0; i < moves.size(); i++) {
+                if(col ==  moves.get(i)[0] && row ==  moves.get(i)[1]) {
+                    Pieces piece = grid[selectedRow][selectedCol];
+                    grid[selectedRow][selectedCol] = new Empty("E");
+                    grid[row][col] = piece;
+                    bourd.setBourd(grid);
+                    bourd.PrintBourd();
+                    gridPain.getChildren().clear();
+                    moves = null;
+                    drawBourd();
+                    selectedRow = -1;
+                    selectedCol = -1;
+                }
+            }
         }
     }
     private void drawBourd(){
