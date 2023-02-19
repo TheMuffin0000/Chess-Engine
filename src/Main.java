@@ -71,7 +71,7 @@ public class Main extends Application {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 String tile = (row + col) % 2 == 0 ? "W" : "G";
-                if (this.moves != null) {
+                if (this.moves  != null) {
                     for(int i = 0; i < moves.size(); i++) {
                         if(col ==  moves.get(i)[0] && row ==  moves.get(i)[1]) {
                             tile = "R";

@@ -8,7 +8,7 @@ public class Pawn extends Pieces{
         super.value = 1;
 
     }
-    public List<int[]> movement(int x, int y, Pieces[][] grid) {//todo fix movment
+    public List<int[]> movement(int x, int y, Pieces[][] grid) {
         int direction;
         if(coulor == "W"){direction = 1;}
         else{direction = -1;}
@@ -20,7 +20,7 @@ public class Pawn extends Pieces{
         int newY = y + dy[0];
         if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].coulor != coulor) {
             validMoves.add(new int[]{newX, newY});
-            if ((coulor == "W" && y == 1) || (coulor == "B" && y == 6)) {
+            if (((coulor == "W" && y == 1) || (coulor == "B" && y == 6))&& grid[newY][newX].coulor == "E") {
                 newY = y + 2 * dy[0];
                 validMoves.add(new int[]{newX, newY});
             }
@@ -31,7 +31,9 @@ public class Pawn extends Pieces{
             newX = x + dx[i];
             newY = y + dy[i];
             if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].coulor != coulor) {
-                validMoves.add(new int[]{newX, newY});
+                if(grid[newY][newX].coulor != "E") {
+                    validMoves.add(new int[]{newX, newY});
+                }
             }
         }
         return validMoves;
