@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
@@ -18,7 +19,7 @@ public class Main extends Application {
     static Pieces[][] grid;
     static Bourd bourd = new Bourd();
     GridPane gridPain = new GridPane();
-    List<int[]> moves;
+    List<int[]> moves = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -38,14 +39,14 @@ public class Main extends Application {
         stage.show();
     }
     private void handleMouseClick(int row, int col) {
-        if (moves == null && grid[row][col].coulor != "E") {
+        if (moves.isEmpty() && grid[row][col].coulor != "E") {
             selectedRow = row;
             selectedCol = col;
 
             Pieces piece = grid[selectedRow][selectedCol];
             moves = piece.movement(selectedCol,selectedRow, grid);
             if(moves.size() < 1) {
-                moves = null;
+                moves.clear();
                 selectedRow = -1;
                 selectedCol = -1;
             }
@@ -59,7 +60,7 @@ public class Main extends Application {
                     bourd.setBourd(grid);
                     bourd.PrintBourd();
                     gridPain.getChildren().clear();
-                    moves = null;
+                    moves.clear();
                     drawBourd();
                     selectedRow = -1;
                     selectedCol = -1;
@@ -71,7 +72,7 @@ public class Main extends Application {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 String tile = (row + col) % 2 == 0 ? "W" : "G";
-                if (this.moves  != null) {
+                if (moves.size() > 0) {
                     for(int i = 0; i < moves.size(); i++) {
                         if(col ==  moves.get(i)[0] && row ==  moves.get(i)[1]) {
                             tile = "R";
