@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Pieces{
-    public Rook(String coulor) {
-        super.coulor = coulor;
+    public Rook(String color) {
+        super.color = color;
         super.image = "R";
         super.value = 5;
 
@@ -15,8 +15,8 @@ public class Rook extends Pieces{
         for (int i = 0; i < 4; i++) {
             int newX = x + dx[i];
             int newY = y + dy[i];
-            while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].coulor != coulor) {
-                if(grid[newY][newX].coulor == "E"){
+            while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color != color) {
+                if(grid[newY][newX].color == "E"){
                     validMoves.add(new int[]{newX, newY});
                     newX += dx[i];
                     newY += dy[i];

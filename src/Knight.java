@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 public class Knight extends Pieces{
-    public Knight(String coulor) {
-        super.coulor = coulor;
+    public Knight(String color) {
+        super.color = color;
         super.image = "N";
         super.value = 3;
     }
@@ -13,7 +13,7 @@ public class Knight extends Pieces{
         for (int i = 0; i < 8; i++) {
             int newX = x + dx[i];
             int newY = y + dy[i];
-            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].coulor !=  coulor) {
+            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color != color) {
                 validMoves.add(new int[]{newX, newY});
             }
         }

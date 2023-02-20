@@ -20,6 +20,8 @@ public class Main extends Application {
     static Bourd bourd = new Bourd();
     GridPane gridPain = new GridPane();
     List<int[]> moves = new ArrayList<>();
+    String turn = "W";
+    ChessEngin player = new ChessEngin();
 
     public static void main(String[] args) {
         launch(args);
@@ -33,24 +35,20 @@ public class Main extends Application {
         grid = bourd.getBourd();
         bourd.PrintBourd();
 
-        drawBourd();
+        drawBoard();
         Scene scene = new Scene(gridPain, WIDTH, HEIGHT);
         stage.setScene(scene);
         stage.show();
     }
     private void handleMouseClick(int row, int col) {
-        if (moves.isEmpty() && grid[row][col].coulor != "E") {
+        if (moves.isEmpty() && grid[row][col].color == turn) {
             selectedRow = row;
             selectedCol = col;
 
             Pieces piece = grid[selectedRow][selectedCol];
             moves = piece.movement(selectedCol,selectedRow, grid);
-            if(moves.size() < 1) {
-                moves.clear();
-                selectedRow = -1;
-                selectedCol = -1;
-            }
-            drawBourd();
+
+            drawBoard();
         } else {
             for(int i = 0; i < moves.size(); i++) {
                 if(col == moves.get(i)[0] && row ==  moves.get(i)[1]) {
@@ -61,14 +59,16 @@ public class Main extends Application {
                     bourd.PrintBourd();
                     gridPain.getChildren().clear();
                     moves.clear();
-                    drawBourd();
+                    if(turn == "W"){turn = "B";}
+                    else{turn = "W";}
                     selectedRow = -1;
                     selectedCol = -1;
+                    drawBoard();
                 }
             }
         }
     }
-    private void drawBourd(){
+    private void drawBoard(){
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 String tile = (row + col) % 2 == 0 ? "W" : "G";
@@ -79,14 +79,23 @@ public class Main extends Application {
                         }
                     }
                 }
-                Image image = new Image("Images/" + tile + "_" + grid[row][col].coulor + "_" + grid[row][col].image + ".png");
+                Image image = new Image("Images/" + tile + "_" + grid[row][col].color + "_" + grid[row][col].image + ".png");
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(TILE_SIZE);
                 imageView.setFitHeight(TILE_SIZE);
                 gridPain.add(imageView, col, row);
                 final int row2 = row;
                 final int col2 = col;
-                imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
+                if(turn == "W"){
+                    bourd.setBourd(player.enginMove(grid));
+                    bourd.PrintBourd();
+                    gridPain.getChildren().clear();
+                    turn = "B";
+                    drawBoard();
+                }
+                else {
+                    imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
+                }
 
             }
         }

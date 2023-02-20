@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Empty extends Pieces{
-    public Empty(String coulor) {
-        super.coulor = coulor;
+    public Empty(String color) {
+        super.color = color;
         super.image = "-";
         super.value = 0;
     }
