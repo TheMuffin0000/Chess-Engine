@@ -24,13 +24,13 @@ public class Bourd {
     }
     public void PrintBourd(){
         for (int i = 0; i < grid.length; i++) {
-            System.out.print(8-i);
+            //System.out.print(8-i);
             for (int j = 0; j < grid.length; j++) {
                 System.out.print(grid[i][j].image);
             }
             System.out.println("");
         }
-        System.out.println("  a b c d e f g h");
+        //System.out.println("  a b c d e f g h");
     }
     public void RestBourd(){
         grid = new Pieces[][]{

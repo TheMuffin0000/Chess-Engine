@@ -73,9 +73,10 @@ public class Main extends Application {
             for (int col = 0; col < 8; col++) {
                 String tile = (row + col) % 2 == 0 ? "W" : "G";
                 if (moves.size() > 0) {
-                    for(int i = 0; i < moves.size(); i++) {
-                        if(col ==  moves.get(i)[0] && row ==  moves.get(i)[1]) {
+                    for (int[] move : moves) {
+                        if (col == move[0] && row == move[1]) {
                             tile = "R";
+                            break;
                         }
                     }
                 }
@@ -87,7 +88,8 @@ public class Main extends Application {
                 final int row2 = row;
                 final int col2 = col;
                 if(turn == "W"){
-                    bourd.setBourd(player.enginMove(grid));
+                    grid = player.enginMove(grid);
+                    bourd.setBourd(grid);
                     bourd.PrintBourd();
                     gridPain.getChildren().clear();
                     turn = "B";

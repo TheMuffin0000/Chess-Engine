@@ -20,9 +20,11 @@ public class Pawn extends Pieces{
         int newY = y + dy[0];
         if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "E") {
             validMoves.add(new int[]{newX, newY});
-            if (((color == "W" && y == 1) || (color == "B" && y == 6))&& grid[newY][newX].color == "E") {
+            if (((color == "W" && y == 1) || (color == "B" && y == 6))) {
                 newY = y + 2 * dy[0];
-                validMoves.add(new int[]{newX, newY});
+                if(grid[newY][newX].color == "E") {
+                    validMoves.add(new int[]{newX, newY});
+                }
             }
         }
         dx = new int[]{-1, 1};
