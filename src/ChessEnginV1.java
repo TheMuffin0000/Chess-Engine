@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessEngin {
+public class ChessEnginV1 {
     List<int[]> moves = new ArrayList<>();
     Pieces[][] savedGrid;
     Pieces[][] grid2;
