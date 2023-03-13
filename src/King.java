@@ -15,7 +15,7 @@ public class King extends Pieces{
         for (int i = 0; i < 8; i++) {
             int newX = x + dx[i];
             int newY = y + dy[i];
-            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color != color && check.isCheck(grid, x, y, newX, newY) == false) {
+            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color != color) {
                 validMoves.add(new int[]{newX, newY});
             }
         }

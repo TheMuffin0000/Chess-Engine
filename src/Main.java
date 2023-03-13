@@ -22,6 +22,7 @@ public class Main extends Application {
     List<int[]> moves = new ArrayList<>();
     String turn = "W";
     ChessEnginV1 player = new ChessEnginV1();
+    KingCheck check = new KingCheck();
 
     public static void main(String[] args) {
         launch(args);
@@ -35,6 +36,7 @@ public class Main extends Application {
         grid = bourd.getBourd();
         bourd.PrintBourd();
 
+
         drawBoard();
         Scene scene = new Scene(gridPain, WIDTH, HEIGHT);
         stage.setScene(scene);
@@ -47,6 +49,21 @@ public class Main extends Application {
 
             Pieces piece = grid[selectedRow][selectedCol];
             moves = piece.movement(selectedCol,selectedRow, grid);
+            if (moves.size() > 0) {
+                List<Integer> removeIndices = new ArrayList<Integer>();
+                for (int i = 0; i < moves.size(); i++) {
+                    int[] move = moves.get(i);
+                    System.out.println(move[0] +"+"+ move[1]);
+                    if (check.isCheck(grid, selectedRow, selectedCol, move[1], move[0], piece)) {
+                        removeIndices.add(i);
+                        System.out.println(move[1] +"removed"+ move[0]);
+                    }
+                }
+                for (int i = removeIndices.size() - 1; i >= 0; i--) {
+                    moves.remove((int) removeIndices.get(i));
+                }
+            }
+
 
             drawBoard();
         } else {
