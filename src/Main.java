@@ -67,9 +67,19 @@ public class Main extends Application {
 
             drawBoard();
         } else {
+            if(row == selectedRow && col == selectedCol){
+                moves.clear();
+                selectedRow = -1;
+                selectedCol = -1;
+                drawBoard();
+            }
             for(int i = 0; i < moves.size(); i++) {
                 if(col == moves.get(i)[0] && row ==  moves.get(i)[1]) {
                     Pieces piece = grid[selectedRow][selectedCol];
+                    if(grid[row][col].image == "K"){
+                        System.out.println(turn + " wins!!!!");
+                        System.exit(0);
+                    }
                     grid[selectedRow][selectedCol] = new Empty("E");
                     grid[row][col] = piece;
                     bourd.setBourd(grid);

@@ -5,6 +5,7 @@ public class ChessEnginV1 {
     List<int[]> moves = new ArrayList<>();
     Pieces[][] savedGrid;
     Pieces[][] grid2;
+    KingCheck check = new KingCheck();
 
     public Pieces[][] enginMove(Pieces[][] grid){
         int score = 1000;
@@ -14,6 +15,21 @@ public class ChessEnginV1 {
                 if(grid[row][col].color == "W"){
                     Pieces piece = grid[row][col];
                     moves = piece.movement(col, row, grid);
+
+                    if (moves.size() > 0) {
+                        List<Integer> removeIndices = new ArrayList<Integer>();
+                        for (int i = 0; i < moves.size(); i++) {
+                            int[] move = moves.get(i);
+                            System.out.println(move[0] +"+"+ move[1]);
+                            if (check.isCheck(grid, row, col, move[1], move[0], piece)) {
+                                removeIndices.add(i);
+                                System.out.println(move[1] +"removed"+ move[0]);
+                            }
+                        }
+                        for (int i = removeIndices.size() - 1; i >= 0; i--) {
+                            moves.remove((int) removeIndices.get(i));
+                        }
+                    }
 
 
 

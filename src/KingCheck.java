@@ -41,6 +41,11 @@ public class KingCheck {
         }
         return false;
     }
+
+    public boolean isMate(){//todo impliment this function
+        return false;
+    }
+
     public Pieces[][] copyArray(Pieces[][] grid){
 
         for (int j = 0; j < 8; j++) {
