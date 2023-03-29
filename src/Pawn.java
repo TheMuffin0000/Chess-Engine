@@ -12,7 +12,7 @@ public class Pawn extends Pieces{
         int direction;
         if(color == "W"){direction = 1;}
         else{direction = -1;}
-        System.out.println(x + "," + y);
+        //System.out.println(x + "," + y);
         List<int[]> validMoves = new ArrayList<>();
         int[] dx = {0};
         int[] dy = {direction};

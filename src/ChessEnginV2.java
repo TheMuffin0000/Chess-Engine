@@ -4,6 +4,7 @@ import java.util.List;
 public class ChessEnginV2 {//todo improve the scoring system to take in to account the value of a position
     List<int[]> moves = new ArrayList<>();
     Pieces[][] savedGrid;
+    Pieces[][] savedGrid2;
     Pieces[][] grid2;
     KingCheck check = new KingCheck();
 
@@ -22,10 +23,10 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                         List<Integer> removeIndices = new ArrayList<Integer>();
                         for (int i = 0; i < moves.size(); i++) {
                             int[] move = moves.get(i);
-                            System.out.println(move[0] +"+"+ move[1]);
+                            //System.out.println(move[0] +"+"+ move[1]);
                             if (check.isCheck(grid, row, col, move[1], move[0], piece)) {
                                 removeIndices.add(i);
-                                System.out.println(move[1] +"removed"+ move[0]);
+                                //System.out.println(move[1] +"removed"+ move[0]);
                             }
                         }
                         for (int i = removeIndices.size() - 1; i >= 0; i--) {
@@ -45,24 +46,25 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                             savedGrid = copyArray(grid2, savedGrid);
                             savedList.clear();
                             savedList.add(savedGrid);
-                            printGrid(savedGrid);
+                            //printGrid(savedGrid);
 
                         } else if (score == score(grid2)) {
                             savedGrid = copyArray(grid2, savedGrid);
                             savedList.add(savedGrid);
-                            printGrid(savedGrid);
+                            //printGrid(savedGrid);
                         }
                     }
                     for(int i = 0; i < savedList.size(); i++) {
                         if(AvalabulMoves(savedList.get(i)) > avalabulMoves) {
+                            printGrid(savedList.get(i));
                             avalabulMoves = AvalabulMoves(savedList.get(i));
-                            savedGrid = copyArray(savedList.get(i), savedGrid);
+                            savedGrid2 = copyArray(savedList.get(i), savedGrid);
                         }
                     }
                 }
             }
         }
-        return savedGrid;
+        return savedGrid2;
     }
     public int score(Pieces[][] grid){
         int score = 0;
@@ -74,7 +76,7 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                 }
             }
         }
-        System.out.println(score);
+        //System.out.println(score);
         return score;
     }
     public void printGrid(Pieces[][] grid){

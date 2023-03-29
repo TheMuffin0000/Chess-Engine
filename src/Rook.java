@@ -26,7 +26,7 @@ public class Rook extends Pieces{
                 }
             }
         }
-        System.out.println(validMoves);
+        //System.out.println(validMoves);
         return validMoves;
 
     }
