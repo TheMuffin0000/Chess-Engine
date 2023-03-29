@@ -12,7 +12,7 @@ public class ChessEnginV1 {
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                if(grid[row][col].color == "W"){
+                if(grid[row][col].color == "B"){
                     Pieces piece = grid[row][col];
                     moves = piece.movement(col, row, grid);
 
@@ -54,7 +54,7 @@ public class ChessEnginV1 {
         int score = 0;
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                if (grid[row][col].color == "B") {
+                if (grid[row][col].color == "W") {
                     Pieces piece = grid[row][col];
                     score += piece.value;
                 }

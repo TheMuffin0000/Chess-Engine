@@ -21,7 +21,8 @@ public class Main extends Application {
     GridPane gridPain = new GridPane();
     List<int[]> moves = new ArrayList<>();
     String turn = "W";
-    ChessEnginV1 player = new ChessEnginV1();
+    ChessEnginV2 player = new ChessEnginV2();
+    ChessEnginV1 player2 = new ChessEnginV1();
     KingCheck check = new KingCheck();
 
     public static void main(String[] args) {
@@ -115,6 +116,7 @@ public class Main extends Application {
                 final int row2 = row;
                 final int col2 = col;
                 if(turn == "W"){
+
                     grid = player.enginMove(grid);
                     bourd.setBourd(grid);
                     bourd.PrintBourd();
@@ -124,6 +126,8 @@ public class Main extends Application {
                 }
                 else {
                     imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
+
+
                 }
 
             }
