@@ -63,6 +63,12 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
         int blackPawnChain = 0;
         int[] dx = new int[]{-1, 1};
 
+        int wightProtection = 0;
+        int blackProtection = 0;
+
+        int wightAttack = 0;
+        int blackAttack = 0;
+
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -71,9 +77,28 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                 if (piece.color == "B") {
                     blackMaterial += piece.value;
                     blackMobility += moves.size();
+                    if(piece.image != "P") {
+                        for (int[] a : moves) {
+                            if (grid[a[1]][a[0]].color == "B") {
+                                blackProtection += 1;
+                            }else if(grid[a[1]][a[0]].color == "W"){
+                                blackAttack += grid[a[1]][a[0]].value/2;
+                            }
+                        }
+                    }
+
                 }else if(piece.color == "W") {
                     wightMaterial += piece.value;
                     wightMobility += moves.size();
+                    if(piece.image != "P") {
+                        for (int[] a : moves) {
+                            if (grid[a[1]][a[0]].color == "W") {
+                                wightProtection += grid[a[1]][a[0]].value/2;
+                            }else if(grid[a[1]][a[0]].color == "B"){
+                                wightAttack += grid[a[1]][a[0]].value/2;
+                            }
+                        }
+                    }
                 }
                 if(piece.image == "P") {
                     for (int i = 0; i < 2; i++) {
@@ -98,6 +123,8 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
         score += (wightMaterial - blackMaterial) * 100;
         score += (wightMobility - blackMobility) * 2;
         score += (wightPawnChain - blackPawnChain) * 10;
+        score += (wightProtection - blackProtection) * 10;
+        score += (wightAttack - blackAttack) * 10;
         System.out.println(score);
         return score;
     }
