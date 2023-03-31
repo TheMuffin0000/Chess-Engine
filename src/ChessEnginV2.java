@@ -4,14 +4,11 @@ import java.util.List;
 public class ChessEnginV2 {//todo improve the scoring system to take in to account the value of a position
     List<int[]> moves = new ArrayList<>();
     Pieces[][] savedGrid;
-    Pieces[][] savedGrid2;
     Pieces[][] grid2;
     KingCheck check = new KingCheck();
 
     public Pieces[][] enginMove(Pieces[][] grid){
-        int score = 1000;
-        int avalabulMoves = 0;
-        ArrayList<Pieces[][]> savedList = new ArrayList<Pieces[][]>();
+        int score = -100000;
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -26,7 +23,7 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                             //System.out.println(move[0] +"+"+ move[1]);
                             if (check.isCheck(grid, row, col, move[1], move[0], piece)) {
                                 removeIndices.add(i);
-                                //System.out.println(move[1] +"removed"+ move[0]);
+                                System.out.println(move[1] +"removed"+ move[0]);
                             }
                         }
                         for (int i = removeIndices.size() - 1; i >= 0; i--) {
@@ -34,60 +31,81 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                         }
                     }
 
-
-
-                    for(int i = 0; i < moves.size(); i++) {
+                    for (int[] a : moves) {
                         grid2 = copyArray(grid, grid2);
-                        //System.out.println(moves.get(i)[0] + ", " + moves.get(i)[1]);
                         grid2[row][col] = new Empty("E");
-                        grid2[moves.get(i)[1]][moves.get(i)[0]] = piece;
-                        if(score > score(grid2)){
-                            score = score(grid2);
+                        grid2[a[1]][a[0]] = piece;
+                        int newScore = score(grid2);
+                        if(score < newScore){
+                            score = newScore;
+                            //System.out.println(score);
                             savedGrid = copyArray(grid2, savedGrid);
-                            savedList.clear();
-                            savedList.add(savedGrid);
-                            //printGrid(savedGrid);
 
-                        } else if (score == score(grid2)) {
-                            savedGrid = copyArray(grid2, savedGrid);
-                            savedList.add(savedGrid);
-                            //printGrid(savedGrid);
-                        }
-                    }
-                    for(int i = 0; i < savedList.size(); i++) {
-                        if(AvalabulMoves(savedList.get(i)) > avalabulMoves) {
-                            printGrid(savedList.get(i));
-                            avalabulMoves = AvalabulMoves(savedList.get(i));
-                            savedGrid2 = copyArray(savedList.get(i), savedGrid);
-                        }
+                        } //else if (score == score(grid2)) {
+                        // savedGrid = copyArray(grid2, savedGrid);
+                        //printGrid(savedGrid);
                     }
                 }
             }
         }
-        return savedGrid2;
+        return savedGrid;
     }
     public int score(Pieces[][] grid){
         int score = 0;
+
+        int wightMaterial = 0;
+        int blackMaterial = 0;
+
+        int wightMobility = 0;
+        int blackMobility = 0;
+
+        int wightPawnChain = 0;
+        int blackPawnChain = 0;
+        int[] dx = new int[]{-1, 1};
+
+
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                if (grid[row][col].color == "B") {
-                    Pieces piece = grid[row][col];
-                    score += piece.value;
+                Pieces piece = grid[row][col];
+                moves = piece.movement(col, row, grid);
+                if (piece.color == "B") {
+                    blackMaterial += piece.value;
+                    blackMobility += moves.size();
+                }else if(piece.color == "W") {
+                    wightMaterial += piece.value;
+                    wightMobility += moves.size();
+                }
+                if(piece.image == "P") {
+                    for (int i = 0; i < 2; i++) {
+                        if(piece.color == "W") {
+                            int newX = col + dx[i];
+                            int newY = row + 1;
+                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "W") {
+                                wightPawnChain += 2 + row;
+                            }
+                        }else{
+                            int newX = col + dx[i];
+                            int newY = row - 1;
+                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "B") {
+                                blackPawnChain += 2 + row;
+
+                            }
+                        }
+                    }
                 }
             }
         }
-        //System.out.println(score);
+        score += (wightMaterial - blackMaterial) * 100;
+        score += (wightMobility - blackMobility) * 2;
+        score += (wightPawnChain - blackPawnChain) * 10;
+        System.out.println(score);
         return score;
     }
-    public void printGrid(Pieces[][] grid){
-        for (int i = 0; i < grid.length; i++) {
-            //System.out.print(8-i);
-            for (int j = 0; j < grid.length; j++) {
-                System.out.print(grid[i][j].image);
-            }
-            System.out.println("");
-        }
-    }
+
+
+
+
+
     public Pieces[][] copyArray(Pieces[][] grid, Pieces[][] grid2){
         grid2 = new Pieces[8][8]; // create a new 2D array
         for (int j = 0; j < 8; j++) {
@@ -96,17 +114,5 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
             }
         }
         return grid2;
-    }
-    public int AvalabulMoves(Pieces[][] grid){
-        int avalabulMoves = 0;
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Pieces piece = grid[row][col];
-                moves = piece.movement(col, row, grid);
-                avalabulMoves += moves.size();
-            }
-        }
-
-        return avalabulMoves;
     }
 }
