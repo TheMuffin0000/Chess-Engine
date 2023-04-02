@@ -41,9 +41,7 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                             //System.out.println(score);
                             savedGrid = copyArray(grid2, savedGrid);
 
-                        } //else if (score == score(grid2)) {
-                        // savedGrid = copyArray(grid2, savedGrid);
-                        //printGrid(savedGrid);
+                        }
                     }
                 }
             }
@@ -112,7 +110,7 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                             int newX = col + dx[i];
                             int newY = row - 1;
                             if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "B") {
-                                blackPawnChain += 2 + row;
+                                blackPawnChain += 2 + (8-row);
 
                             }
                         }
