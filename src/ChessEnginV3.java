@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class ChessEnginV3 {//todo crate a recursive way for the engine to look at posibul future bourd states
     List<int[]> moves = new ArrayList<>();
@@ -14,6 +12,7 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
 
     public Pieces[][] enginMove(Pieces[][] grid){
         System.out.println("################################################");
+        int length = 0;
 
 
         int score2 = -100000;
@@ -27,7 +26,7 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
             NaryTreeNode child1 = new NaryTreeNode(storedGame);
             root.addChild(child1);
         }
-        depth(root, 12, "B");
+        depth(root, 3, "B");
 
 
 
@@ -41,48 +40,55 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
             List<NaryTreeNode> leafNodes = new ArrayList<>();
             findLeafNodes(child, leafNodes);
             for(NaryTreeNode leaf : leafNodes) {
+                length += 1;
                 newScore = score(leaf.getValue());
                 if(newScore < score){
                     score = newScore;
+
                 }
             }
             if(score > score2){
                 score2 = score;
                 System.out.println(score);
+
                 savedGrid2 = copyArray(child.getValue());
             }
         }
+        System.out.println(length);
 
 
         return savedGrid2;
     }
-    public void depth(NaryTreeNode root, int depth, String color) {
+    public void depth(NaryTreeNode start, int depth, String color) {
         if (depth <= 0) {
             return;
         }
 
-        Queue<NaryTreeNode> queue = new LinkedList<>();
-        queue.add(root);
+        //Queue<NaryTreeNode> queue = new LinkedList<>();
+        //queue.add(start);
 
-        while (!queue.isEmpty()) {
-            NaryTreeNode node = queue.poll();
-            List<NaryTreeNode> children = node.getChildren();
+        //NaryTreeNode node = queue.poll();
+        //List<NaryTreeNode> children = node.getChildren();
 
-            for (NaryTreeNode child : children) {
-                List<Pieces[][]> storedGames = boardStates(copyArray(child.getValue()), color);
+        List<NaryTreeNode> leafNodes = new ArrayList<>();
+        findLeafNodes(start, leafNodes);
+        System.out.println(leafNodes.size());
 
-                for (Pieces[][] storedGame : storedGames) {
-                    NaryTreeNode child1 = new NaryTreeNode(storedGame);
-                    child.addChild(child1);
-                    queue.add(child1);
-                }
+        for (NaryTreeNode child : leafNodes) {
+            List<Pieces[][]> storedGames = boardStates(copyArray(child.getValue()), color);
+            //System.out.println(storedGames.size());
+
+            for (Pieces[][] storedGame : storedGames) {
+                NaryTreeNode child1 = new NaryTreeNode(storedGame);
+                child.addChild(child1);
+                //queue.add(child1);
             }
+        }
 
-            color = color.equals("W") ? "B" : "W";
-            depth--;
-            if (depth <= 0) {
-                break;
-            }
+        color = color.equals("W") ? "B" : "W";
+        depth--;
+        if (depth > 0) {
+            depth(start, depth, color);
         }
     }
 
@@ -158,10 +164,10 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
             }
         }
         score += (wightMaterial - blackMaterial) * 100;
-        score += (wightMobility - blackMobility) * 2;
-        score += (wightPawnChain - blackPawnChain) * 10;
-        score += (wightProtection - blackProtection) * 10;
-        score += (wightAttack - blackAttack) * 5;
+        //score += (wightMobility - blackMobility) * 2;
+        //score += (wightPawnChain - blackPawnChain) * 10;
+        //score += (wightProtection - blackProtection) * 10;
+        //score += (wightAttack - blackAttack) * 5;
         //System.out.println(score);
         return score;
     }
