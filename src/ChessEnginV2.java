@@ -9,10 +9,11 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
 
     public Pieces[][] enginMove(Pieces[][] grid){
         int score = -100000;
+        String color = "B";
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                if(grid[row][col].color == "W"){
+                if(grid[row][col].color == "color"){
                     Pieces piece = grid[row][col];
                     moves = piece.movement(col, row, grid);
 
@@ -77,22 +78,22 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                     blackMobility += moves.size();
                     if(piece.image != "P") {
                         for (int[] a : moves) {
-                            if (grid[a[1]][a[0]].color == "B") {
+                            if (grid[a[1]][a[0]].color == "W") {
                                 blackProtection += 1;
-                            }else if(grid[a[1]][a[0]].color == "W"){
+                            }else if(grid[a[1]][a[0]].color == "B"){
                                 blackAttack += grid[a[1]][a[0]].value/2;
                             }
                         }
                     }
 
-                }else if(piece.color == "W") {
+                }else if(piece.color == "B") {
                     wightMaterial += piece.value;
                     wightMobility += moves.size();
                     if(piece.image != "P") {
                         for (int[] a : moves) {
-                            if (grid[a[1]][a[0]].color == "W") {
+                            if (grid[a[1]][a[0]].color == "B") {
                                 wightProtection += grid[a[1]][a[0]].value/2;
-                            }else if(grid[a[1]][a[0]].color == "B"){
+                            }else if(grid[a[1]][a[0]].color == "W"){
                                 wightAttack += grid[a[1]][a[0]].value/2;
                             }
                         }
@@ -100,16 +101,16 @@ public class ChessEnginV2 {//todo improve the scoring system to take in to accou
                 }
                 if(piece.image == "P") {
                     for (int i = 0; i < 2; i++) {
-                        if(piece.color == "W") {
+                        if(piece.color == "B") {
                             int newX = col + dx[i];
                             int newY = row + 1;
-                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "W") {
+                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "B") {
                                 wightPawnChain += 2 + row;
                             }
                         }else{
                             int newX = col + dx[i];
                             int newY = row - 1;
-                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "B") {
+                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "W") {
                                 blackPawnChain += 2 + (8-row);
 
                             }

@@ -7,9 +7,11 @@ public class Pawn extends Pieces{
         super.image = "P";
         super.value = 1;
 
+
     }
     public List<int[]> movement(int x, int y, Pieces[][] grid) {//todo crate ato queen on 8th rank and add onpasont
         int direction;
+
         if(color == "W"){direction = 1;}
         else{direction = -1;}
         //System.out.println(x + "," + y);

@@ -26,19 +26,24 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
             NaryTreeNode child1 = new NaryTreeNode(storedGame);
             root.addChild(child1);
         }
-        depth(root, 3, "B");
+        if(root.getChildren().size() != 0) {
+            depth(root, 3, "B");
+        }else{
+            savedGrid2 = grid;
+        }
 
 
 
         List<NaryTreeNode> children = root.getChildren();
 
         // Iterate through each child node and print its leaf nodes
-        for (NaryTreeNode child : children) {
+        for (NaryTreeNode child : children) {//todo look back at this function
             int score = 100000;
             int newScore;
             List<NaryTreeNode> bestCase;
             List<NaryTreeNode> leafNodes = new ArrayList<>();
             findLeafNodes(child, leafNodes);
+
             for(NaryTreeNode leaf : leafNodes) {
                 length += 1;
                 newScore = score(leaf.getValue());
@@ -64,15 +69,10 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
             return;
         }
 
-        //Queue<NaryTreeNode> queue = new LinkedList<>();
-        //queue.add(start);
-
-        //NaryTreeNode node = queue.poll();
-        //List<NaryTreeNode> children = node.getChildren();
 
         List<NaryTreeNode> leafNodes = new ArrayList<>();
         findLeafNodes(start, leafNodes);
-        System.out.println(leafNodes.size());
+        //System.out.println(leafNodes.size());
 
         for (NaryTreeNode child : leafNodes) {
             List<Pieces[][]> storedGames = boardStates(copyArray(child.getValue()), color);
@@ -84,12 +84,16 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
                 //queue.add(child1);
             }
         }
+        System.out.println(color);
 
-        color = color.equals("W") ? "B" : "W";
-        depth--;
+
         if (depth > 0) {
+            color = color.equals("W") ? "B" : "W";
+            depth--;
+
             depth(start, depth, color);
         }
+
     }
 
 
@@ -164,10 +168,10 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
             }
         }
         score += (wightMaterial - blackMaterial) * 100;
-        //score += (wightMobility - blackMobility) * 2;
-        //score += (wightPawnChain - blackPawnChain) * 10;
-        //score += (wightProtection - blackProtection) * 10;
-        //score += (wightAttack - blackAttack) * 5;
+        score += (wightMobility - blackMobility) * 2;
+        score += (wightPawnChain - blackPawnChain) * 10;
+        score += (wightProtection - blackProtection) * 10;
+        score += (wightAttack - blackAttack) * 5;
         //System.out.println(score);
         return score;
     }

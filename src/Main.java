@@ -22,7 +22,7 @@ public class Main extends Application {
     List<int[]> moves = new ArrayList<>();
     String turn = "W";
     ChessEnginV3 player = new ChessEnginV3();
-    ChessEnginV1 player2 = new ChessEnginV1();
+    ChessEnginV2 player2 = new ChessEnginV2();
     KingCheck check = new KingCheck();
 
     public static void main(String[] args) {
@@ -99,6 +99,9 @@ public class Main extends Application {
     private void drawBoard(){
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
+                if((row == 0 || row == 7) && grid[row][col].image == "P"){
+                    grid[row][col] = new Queen(grid[row][col].color);
+                }
                 String tile = (row + col) % 2 == 0 ? "W" : "G";
                 if (moves.size() > 0) {
                     for (int[] move : moves) {
@@ -125,6 +128,14 @@ public class Main extends Application {
                     drawBoard();
                 }
                 else {
+                    /**
+                    grid = player2.enginMove(grid);
+                    bourd.setBourd(grid);
+                    bourd.PrintBourd();
+                    gridPain.getChildren().clear();
+                    turn = "B";
+                    drawBoard();
+                     */
                     imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
 
 

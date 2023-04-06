@@ -1,5 +1,5 @@
 public class Bourd {
-    Pieces[][] grid;
+    Pieces[][] grid = new Pieces[8][8];
 
     Queen whightQueen = new Queen("W");
     King whightKing = new King("W");
