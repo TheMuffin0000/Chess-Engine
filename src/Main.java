@@ -21,7 +21,8 @@ public class Main extends Application {
     GridPane gridPain = new GridPane();
     List<int[]> moves = new ArrayList<>();
     String turn = "W";
-    ChessEnginV3 player = new ChessEnginV3();
+    ChessEnginV4 player = new ChessEnginV4();
+    int move = 1;
     ChessEnginV2 player2 = new ChessEnginV2();
     KingCheck check = new KingCheck();
 
@@ -120,7 +121,9 @@ public class Main extends Application {
                 final int col2 = col;
                 if(turn == "W"){
 
+
                     grid = player.enginMove(grid);
+                    move += 1;
                     bourd.setBourd(grid);
                     bourd.PrintBourd();
                     gridPain.getChildren().clear();

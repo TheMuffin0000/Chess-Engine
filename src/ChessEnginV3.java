@@ -57,9 +57,11 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
                 System.out.println(score);
 
                 savedGrid2 = copyArray(child.getValue());
+
             }
         }
         System.out.println(length);
+
 
 
         return savedGrid2;
@@ -116,6 +118,9 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
         int wightAttack = 0;
         int blackAttack = 0;
 
+        int wightCenter = 0;
+        int blackCenter = 0;
+
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -126,8 +131,13 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
                     blackMobility += moves.size();
                     if(piece.image != "P") {
                         for (int[] a : moves) {
+                            if(a[1] == 3 || a[0] == 3){
+                                if(a[1] == 4 || a[0] == 4){
+                                    blackCenter += 1;
+                                }
+                            }
                             if (grid[a[1]][a[0]].color == "B") {
-                                blackProtection += 1;
+                                blackProtection += grid[a[1]][a[0]].value/2;
                             }else if(grid[a[1]][a[0]].color == "W"){
                                 blackAttack += grid[a[1]][a[0]].value/2;
                             }
@@ -139,6 +149,11 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
                     wightMobility += moves.size();
                     if(piece.image != "P") {
                         for (int[] a : moves) {
+                            if(a[1] == 3 || a[0] == 3){
+                                if(a[1] == 4 || a[0] == 4){
+                                    wightCenter += 1;
+                                }
+                            }
                             if (grid[a[1]][a[0]].color == "W") {
                                 wightProtection += grid[a[1]][a[0]].value/2;
                             }else if(grid[a[1]][a[0]].color == "B"){
@@ -172,6 +187,7 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
         score += (wightPawnChain - blackPawnChain) * 10;
         score += (wightProtection - blackProtection) * 10;
         score += (wightAttack - blackAttack) * 5;
+        score += (wightCenter - blackCenter) * 10;
         //System.out.println(score);
         return score;
     }
