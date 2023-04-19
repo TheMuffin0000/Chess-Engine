@@ -21,7 +21,7 @@ public class Main extends Application {
     GridPane gridPain = new GridPane();
     List<int[]> moves = new ArrayList<>();
     String turn = "W";
-    ChessEnginV4 player = new ChessEnginV4();
+    ChessEnginV5 player = new ChessEnginV5();
     int move = 1;
     ChessEnginV2 player2 = new ChessEnginV2();
     KingCheck check = new KingCheck();

@@ -7,6 +7,8 @@ public class ChessEnginV4 {//todo crate a recursive way for the engine to look a
     Pieces[][] savedGrid2;
     Pieces[][] grid2;
     KingCheck check = new KingCheck();
+
+    int leafs = 0;
     NaryTreeNode root;
 
 
@@ -20,63 +22,65 @@ public class ChessEnginV4 {//todo crate a recursive way for the engine to look a
 
         root = new NaryTreeNode(grid);
 
-        depth(root, 4, "W");
+        System.out.println(depth(root, 4, "W"));
 
-
-
-
-        List<NaryTreeNode> children = root.getChildren();
-
-        // Iterate through each child node and print its leaf nodes
-        for (NaryTreeNode child : children) {//todo look back at this function
-            int score = 100000;
-            int newScore;
-            List<NaryTreeNode> bestCase;
-            List<NaryTreeNode> leafNodes = new ArrayList<>();
-            findLeafNodes(child, leafNodes);
-
-            for(NaryTreeNode leaf : leafNodes) {
-                length += 1;
-                newScore = score(leaf.getValue());
-                if(newScore < score){
-                    score = newScore;
-                    //printGrid(leaf.getValue());
-
-                }
-            }
-            if(score > score2){
-                score2 = score;
-                System.out.println(score);
-
-                savedGrid2 = copyArray(child.getValue());
-                //printGrid(savedGrid2);
-
-            }
-        }
-        System.out.println(length);
-
-
+        System.out.println(leafs);
 
         return savedGrid2;
     }
-    public void depth(NaryTreeNode start, int depth, String color) {
+    public int depth(NaryTreeNode start, int depth, String color) {
         if (depth <= 0) {
-            return;
+            int value = score(start.getValue());
+            leafs += 1;
+            return value;
         }
-        //System.out.println(color);
 
-        List<Pieces[][]> storedGames;
-        storedGames = boardStates(start.getValue(), color);
+        if(color == "W") {
 
-        for (Pieces[][] storedGame : storedGames) {
-            NaryTreeNode child1 = new NaryTreeNode(storedGame);
+            int max = -1000;
+
+            List<Pieces[][]> storedGames;
+            storedGames = boardStates(start.getValue(), color);
+
+            for (Pieces[][] storedGame : storedGames) {
+                NaryTreeNode child1 = new NaryTreeNode(storedGame);
 
 
-            if (depth > 0) {
-                depth(child1, depth-1, color.equals("W") ? "B" : "W");
+                int value = depth(child1, depth - 1, "B");
 
+                if(value > max){
+                    max = value;
+                    if(depth == 4){
+                        savedGrid2 = child1.getValue();
+                    }
+                }
+
+
+
+                start.addChild(child1);
             }
-            start.addChild(child1);
+            return max;
+        }else{
+
+            int min = 1000;
+
+            List<Pieces[][]> storedGames;
+            storedGames = boardStates(start.getValue(), color);
+
+            for (Pieces[][] storedGame : storedGames) {
+                NaryTreeNode child1 = new NaryTreeNode(storedGame);
+
+
+                int value = depth(child1, depth - 1, "W");
+
+                if (value < min){
+                    min = value;
+                }
+
+
+                start.addChild(child1);
+            }
+            return min;
         }
     }
 
@@ -87,22 +91,6 @@ public class ChessEnginV4 {//todo crate a recursive way for the engine to look a
         int wightMaterial = 0;
         int blackMaterial = 0;
 
-        int wightMobility = 0;
-        int blackMobility = 0;
-
-        int wightPawnChain = 0;
-        int blackPawnChain = 0;
-        int[] dx = new int[]{-1, 1};
-
-        int wightProtection = 0;
-        int blackProtection = 0;
-
-        int wightAttack = 0;
-        int blackAttack = 0;
-
-        int wightCenter = 0;
-        int blackCenter = 0;
-
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -110,66 +98,13 @@ public class ChessEnginV4 {//todo crate a recursive way for the engine to look a
                 moves = piece.movement(col, row, grid);
                 if (piece.color == "B") {
                     blackMaterial += piece.value;
-                    blackMobility += moves.size();
-                    if(piece.image != "P") {
-                        for (int[] a : moves) {
-                            if(a[1] == 3 || a[0] == 3){
-                                if(a[1] == 4 || a[0] == 4){
-                                    blackCenter += 1;
-                                }
-                            }
-                            if (grid[a[1]][a[0]].color == "B") {
-                                blackProtection += grid[a[1]][a[0]].value/2;
-                            }else if(grid[a[1]][a[0]].color == "W"){
-                                blackAttack += grid[a[1]][a[0]].value/2;
-                            }
-                        }
-                    }
 
                 }else if(piece.color == "W") {
                     wightMaterial += piece.value;
-                    wightMobility += moves.size();
-                    if(piece.image != "P") {
-                        for (int[] a : moves) {
-                            if(a[1] == 3 || a[0] == 3){
-                                if(a[1] == 4 || a[0] == 4){
-                                    wightCenter += 1;
-                                }
-                            }
-                            if (grid[a[1]][a[0]].color == "W") {
-                                wightProtection += grid[a[1]][a[0]].value/2;
-                            }else if(grid[a[1]][a[0]].color == "B"){
-                                wightAttack += grid[a[1]][a[0]].value/2;
-                            }
-                        }
-                    }
-                }
-                if(piece.image == "P") {
-                    for (int i = 0; i < 2; i++) {
-                        if(piece.color == "W") {
-                            int newX = col + dx[i];
-                            int newY = row + 1;
-                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "W") {
-                                wightPawnChain += 2 + row;
-                            }
-                        }else{
-                            int newX = col + dx[i];
-                            int newY = row - 1;
-                            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "B") {
-                                blackPawnChain += 2 + (8-row);
-
-                            }
-                        }
-                    }
                 }
             }
         }
-        score += (wightMaterial - blackMaterial) * 100;
-        score += (wightMobility - blackMobility) * 2;
-        score += (wightPawnChain - blackPawnChain) * 10;
-        score += (wightProtection - blackProtection) * 10;
-        score += (wightAttack - blackAttack) * 5;
-        score += (wightCenter - blackCenter) * 10;
+        score += (wightMaterial - blackMaterial);
         //System.out.println(score);
         return score;
     }

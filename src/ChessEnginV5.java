@@ -1,105 +1,103 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessEnginV3 {//todo crate a recursive way for the engine to look at posibul future bourd states
+public class ChessEnginV5 {//todo crate a recursive way for the engine to look at posibul future bourd states
     List<int[]> moves = new ArrayList<>();
     Pieces[][] savedGrid;
     Pieces[][] savedGrid2;
     Pieces[][] grid2;
     KingCheck check = new KingCheck();
+
+    int leafs = 0;
+    int depth2 = 4;
     NaryTreeNode root;
 
 
     public Pieces[][] enginMove(Pieces[][] grid){
         System.out.println("################################################");
-        int length = 0;
+        leafs = 0;
 
 
-        int score2 = -100000;
         String color = "W";
 
         root = new NaryTreeNode(grid);
-        List<Pieces[][]> storedGames;
-        storedGames = boardStates(copyArray(root.getValue()), color);
 
-        for (Pieces[][] storedGame : storedGames) {
-            NaryTreeNode child1 = new NaryTreeNode(storedGame);
-            root.addChild(child1);
-        }
-        if(root.getChildren().size() != 0) {
-            depth(root, 3, "B");
-        }else{
-            savedGrid2 = grid;
-        }
+        System.out.println(depth(root, depth2, "W", -100000, 100000));
 
-
-
-        List<NaryTreeNode> children = root.getChildren();
-
-        // Iterate through each child node and print its leaf nodes
-        for (NaryTreeNode child : children) {//todo look back at this function
-            int score = 100000;
-            int newScore;
-            List<NaryTreeNode> bestCase;
-            List<NaryTreeNode> leafNodes = new ArrayList<>();
-            findLeafNodes(child, leafNodes);
-
-            for(NaryTreeNode leaf : leafNodes) {
-                length += 1;
-                newScore = score(leaf.getValue());
-                if(newScore < score){
-                    score = newScore;
-
-                }
-            }
-            if(score > score2){
-                score2 = score;
-                System.out.println(score);
-
-                savedGrid2 = copyArray(child.getValue());
-
-            }
-        }
-        System.out.println(length);
-
-
+        System.out.println(leafs);
 
         return savedGrid2;
     }
-    public void depth(NaryTreeNode start, int depth, String color) {
+    public int depth(NaryTreeNode start, int depth, String color,int alpha,int beta) {
         if (depth <= 0) {
-            return;
+            int value = score(start.getValue());
+            leafs += 1;
+            return value;
         }
 
+        if(color == "W") {
 
-        List<NaryTreeNode> leafNodes = new ArrayList<>();
-        findLeafNodes(start, leafNodes);
-        //System.out.println(leafNodes.size());
+            int max = -100000;
 
-        for (NaryTreeNode child : leafNodes) {
-            List<Pieces[][]> storedGames = boardStates(copyArray(child.getValue()), color);
-            //System.out.println(storedGames.size());
+            List<Pieces[][]> storedGames;
+            storedGames = boardStates(start.getValue(), color);
 
             for (Pieces[][] storedGame : storedGames) {
                 NaryTreeNode child1 = new NaryTreeNode(storedGame);
-                child.addChild(child1);
-                //queue.add(child1);
+
+
+                int value = depth(child1, depth - 1, "B", alpha, beta);
+
+                if(value > max){
+                    max = value;
+                    if(depth == depth2){
+                        savedGrid2 = child1.getValue();
+                    }
+                }
+                if(alpha < value){
+                    alpha = value;
+                }
+                if(beta <= alpha){
+                    break;
+                }
+
+
+                start.addChild(child1);
             }
+            return max;
+        }else{
+
+            int min = 100000;
+
+            List<Pieces[][]> storedGames;
+            storedGames = boardStates(start.getValue(), color);
+
+            for (Pieces[][] storedGame : storedGames) {
+                NaryTreeNode child1 = new NaryTreeNode(storedGame);
+
+
+                int value = depth(child1, depth - 1, "W", alpha, beta);
+
+                if (value < min){
+                    min = value;
+                }
+
+                if(beta > value){
+                    beta = value;
+                }
+
+                if(beta <= alpha){
+                    break;
+                }
+
+                start.addChild(child1);
+            }
+            return min;
         }
-        System.out.println(color);
-
-
-        if (depth > 0) {
-            color = color.equals("W") ? "B" : "W";
-            depth--;
-
-            depth(start, depth, color);
-        }
-
     }
 
 
-    public int score(Pieces[][] grid){
+    public int score(Pieces[][] grid) {
         int score = 0;
 
         int wightMaterial = 0;
@@ -182,7 +180,7 @@ public class ChessEnginV3 {//todo crate a recursive way for the engine to look a
                 }
             }
         }
-        score += (wightMaterial - blackMaterial) * 20;
+        score += (wightMaterial - blackMaterial) * 100;
         score += (wightMobility - blackMobility) * 2;
         score += (wightPawnChain - blackPawnChain) * 10;
         score += (wightProtection - blackProtection) * 10;
