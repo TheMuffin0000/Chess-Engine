@@ -34,14 +34,14 @@ public class Bourd {
     }
     public void RestBourd(){
         grid = new Pieces[][]{
-                {whightRook, whightKnight, whightBishop, whightQueen, whightKing, whightBishop, whightKnight, whightRook},
+                {whightRook, whightKnight, whightBishop, whightKing, whightQueen, whightBishop, whightKnight, whightRook},
                 {whightPawn, whightPawn, whightPawn, whightPawn, whightPawn, whightPawn, whightPawn, whightPawn},
                 {empty, empty, empty, empty, empty, empty, empty, empty},
                 {empty, empty, empty, empty, empty, empty, empty, empty},
                 {empty, empty, empty, empty, empty, empty, empty, empty},
                 {empty, empty, empty, empty, empty, empty, empty, empty},
                 {blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn},
-                {blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook},
+                {blackRook, blackKnight, blackBishop, blackKing, blackQueen, blackBishop, blackKnight, blackRook},
         };
     }
     //public int[] getScore(){}

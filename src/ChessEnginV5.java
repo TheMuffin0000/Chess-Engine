@@ -8,21 +8,29 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
     Pieces[][] grid2;
     KingCheck check = new KingCheck();
 
-    int leafs = 0;
+    int leafs = 2001;
     int depth2 = 4;
+    int limInf = 1000000000;
     NaryTreeNode root;
 
 
     public Pieces[][] enginMove(Pieces[][] grid){
         System.out.println("################################################");
-        leafs = 0;
+        if(leafs < 2000){
+            depth2 = 6;
+        }else{
+            depth2 = 4;
+        }
 
 
         String color = "W";
 
         root = new NaryTreeNode(grid);
 
-        System.out.println(depth(root, depth2, "W", -100000, 100000));
+        leafs = 0;
+
+
+        System.out.println(depth(root, depth2, "W", -limInf, limInf));
 
         System.out.println(leafs);
 
@@ -37,10 +45,19 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
 
         if(color == "W") {
 
-            int max = -100000;
+            int max = -limInf;
 
             List<Pieces[][]> storedGames;
             storedGames = boardStates(start.getValue(), color);
+
+            if(storedGames.size() == 0){
+                if(check.isMate(start.getValue(), "W")){
+                    return max;
+                }
+                else{
+                    return 0;
+                }
+            }
 
             for (Pieces[][] storedGame : storedGames) {
                 NaryTreeNode child1 = new NaryTreeNode(storedGame);
@@ -67,10 +84,19 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
             return max;
         }else{
 
-            int min = 100000;
+            int min = limInf;
 
             List<Pieces[][]> storedGames;
             storedGames = boardStates(start.getValue(), color);
+
+            if(storedGames.size() == 0){
+                if(check.isMate(start.getValue(), "B")){
+                    return min;
+                }
+                else{
+                    return 0;
+                }
+            }
 
             for (Pieces[][] storedGame : storedGames) {
                 NaryTreeNode child1 = new NaryTreeNode(storedGame);
@@ -163,16 +189,18 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
                 if(piece.image == "P") {
                     for (int i = 0; i < 2; i++) {
                         if(piece.color == "W") {
+                            wightPawnChain += row;
                             int newX = col + dx[i];
                             int newY = row + 1;
                             if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "W") {
-                                wightPawnChain += 2 + row;
+                                wightPawnChain += 2;
                             }
                         }else{
+                            blackPawnChain += (8-row);
                             int newX = col + dx[i];
                             int newY = row - 1;
                             if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && grid[newY][newX].color == "B") {
-                                blackPawnChain += 2 + (8-row);
+                                blackPawnChain += 2;
 
                             }
                         }

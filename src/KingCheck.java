@@ -8,30 +8,23 @@ public class KingCheck {
     public boolean isCheck(Pieces[][] grid, int x, int y, int newX, int newY, Pieces piece){
 
         grid2 = copyArray(grid);
-        //System.out.println("grid");
-        PrintBourd(grid);
-        //System.out.println("grid2");
-        PrintBourd(grid2);
 
         grid2[x][y] = new Empty("E");
         grid2[newX][newY] = piece;
-        //System.out.println("grid");
-        PrintBourd(grid);
-        //System.out.println("grid2 v2");
-        PrintBourd(grid2);
+
+
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 if(grid2[row][col].color != piece.color && grid2[row][col].color != "E") {
                     Pieces piece2 = grid2[row][col];
                     moves = piece2.movement(col,row, grid2);
-                    //System.out.println(piece2.image);
+
                     if (moves.size() > 0) {
                         for (int[] move : moves) {
-                            //System.out.println(move[1] +" fuck move "+ move[0] + " cunt " + grid2[move[1]][move[0]].image);
+
 
                             if (grid2[move[1]][move[0]].image == "K") {
-                                //System.out.println(newX +" kill me "+ newY);
-                                //System.out.println(piece2.image +" kill me ");
+
                                 return true;
                             }
                         }
@@ -42,7 +35,26 @@ public class KingCheck {
         return false;
     }
 
-    public boolean isMate(){//todo impliment this function
+    public boolean isMate(Pieces[][] grid, String color){//todo impliment this function
+        grid2 = copyArray(grid);
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if(grid2[row][col].color != color && grid2[row][col].color != "E") {
+                    Pieces piece2 = grid2[row][col];
+                    moves = piece2.movement(col,row, grid2);
+                    if (moves.size() > 0) {
+                        for (int[] move : moves) {
+
+
+                            if (grid2[move[1]][move[0]].image == "K") {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
