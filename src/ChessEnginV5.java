@@ -8,26 +8,22 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
     Pieces[][] grid2;
     KingCheck check = new KingCheck();
 
-    int leafs = 2001;
+    int leafs = 0;
     int depth2 = 4;
-    int limInf = 1000000000;
+    final int limInf = 1000000000;
     NaryTreeNode root;
 
 
     public Pieces[][] enginMove(Pieces[][] grid){
         System.out.println("################################################");
-        if(leafs < 2000){
-            depth2 = 6;
-        }else{
-            depth2 = 4;
-        }
+
 
 
         String color = "W";
 
         root = new NaryTreeNode(grid);
 
-        leafs = 0;
+
 
 
         System.out.println(depth(root, depth2, "W", -limInf, limInf));
@@ -52,7 +48,7 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
 
             if(storedGames.size() == 0){
                 if(check.isMate(start.getValue(), "W")){
-                    return max;
+                    return max + depth;
                 }
                 else{
                     return 0;

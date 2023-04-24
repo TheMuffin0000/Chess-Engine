@@ -23,7 +23,7 @@ public class Main extends Application {
     String turn = "W";
     ChessEnginV5 player = new ChessEnginV5();
     int move = 1;
-    ChessEnginV2 player2 = new ChessEnginV2();
+    ChessEnginV5 player2 = new ChessEnginV5();
     KingCheck check = new KingCheck();
 
     public static void main(String[] args) {
