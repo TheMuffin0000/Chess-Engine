@@ -15,6 +15,8 @@ public class ChessEnginV4 {//todo crate a recursive way for the engine to look a
     public Pieces[][] enginMove(Pieces[][] grid){
         System.out.println("################################################");
         int length = 0;
+        long startTime = System.nanoTime(); // Get the start time
+
 
 
         int score2 = -100000;
@@ -23,6 +25,11 @@ public class ChessEnginV4 {//todo crate a recursive way for the engine to look a
         root = new NaryTreeNode(grid);
 
         System.out.println(depth(root, 4, "W"));
+
+        long endTime = System.nanoTime(); // Get the end time
+        long elapsedTime = endTime - startTime; // Calculate the elapsed time in nanoseconds
+
+        System.out.println("Elapsed time: " + elapsedTime + " ns");
 
         System.out.println(leafs);
 

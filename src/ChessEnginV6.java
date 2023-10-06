@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessEnginV5 {//todo crate a recursive way for the engine to look at posibul future bourd states
+public class ChessEnginV6 {//todo crate a recursive way for the engine to look at posibul future bourd states
     List<int[]> moves = new ArrayList<>();
     Pieces[][] savedGrid;
     Pieces[][] savedGrid2;
@@ -14,20 +14,17 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
     NaryTreeNode root;
 
 
-    public Pieces[][] enginMove(Pieces[][] grid){
+    public Pieces[][] enginMove(Pieces[][] grid,String color){
         System.out.println("################################################");
         long startTime = System.nanoTime(); // Get the start time
 
-
-
-        String color = "W";
 
         root = new NaryTreeNode(grid);
 
 
 
 
-        System.out.println(depth(root, depth2, "W", -limInf, limInf));
+        System.out.println(depth(root, depth2, color, -limInf, limInf));
 
         long endTime = System.nanoTime(); // Get the end time
         long elapsedTime = endTime - startTime; // Calculate the elapsed time in nanoseconds
@@ -113,6 +110,9 @@ public class ChessEnginV5 {//todo crate a recursive way for the engine to look a
 
                 if (value < min){
                     min = value;
+                    if(depth == depth2){
+                        savedGrid2 = child1.getValue();
+                    }
                 }
 
                 if(beta > value){

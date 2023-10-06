@@ -21,9 +21,9 @@ public class Main extends Application {
     GridPane gridPain = new GridPane();
     List<int[]> moves = new ArrayList<>();
     String turn = "W";
-    ChessEnginV5 player = new ChessEnginV5();
+    ChessEnginV6 player = new ChessEnginV6();
     int move = 1;
-    ChessEnginV5 player2 = new ChessEnginV5();
+    ChessEnginV4 player2 = new ChessEnginV4();
     KingCheck check = new KingCheck();
 
     public static void main(String[] args) {
@@ -97,6 +97,9 @@ public class Main extends Application {
             }
         }
     }
+    private void waitToDraw(){
+        drawBoard();
+    }
     private void drawBoard(){
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -121,24 +124,21 @@ public class Main extends Application {
                 final int col2 = col;
                 if(turn == "W"){
 
-
-                    grid = player.enginMove(grid);
+                    grid = player.enginMove(grid, "W");
                     move += 1;
                     bourd.setBourd(grid);
                     bourd.PrintBourd();
                     gridPain.getChildren().clear();
                     turn = "B";
                     drawBoard();
+
+
+                    //imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
                 }
                 else {
-                    /**
-                    grid = player2.enginMove(grid);
-                    bourd.setBourd(grid);
-                    bourd.PrintBourd();
-                    gridPain.getChildren().clear();
-                    turn = "B";
-                    drawBoard();
-                     */
+
+
+
                     imageView.setOnMouseClicked(e -> handleMouseClick(row2, col2));
 
 
